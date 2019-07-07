@@ -1,3 +1,13 @@
+float[][] rotate(float[][] vertex, float ang, PVector axis) {
+  Rotation r = new Rotation(ang, axis);
+  float[][] result = new float[vertex.length][vertex[0].length];
+  for (int i = 0; i < vertex.length; i++) {
+    float[] w = r.rotate(vertex[i]);
+    result[i] = w;
+  }
+  return result;
+}
+
 float[][] multiplica(float[][] a,float[][] b){
     if (a[0].length != b.length) {
         throw new IllegalArgumentException("Incompatible matrices.");
@@ -154,7 +164,10 @@ float[][] vertice = new float[][]{   {100,100,0,1},
                                       {140,220,120,1},
                                       {100,220,120,1}};
 
-float[][] vertices = projecaoIsometrica(vertice);
+PVector p = new PVector(450, 450);
+PVector q = new PVector(650, 400);
+// float[][] vertices = projecaoIsometrica(vertice);
+float[][] vertices = rotate(projecaoIsometrica(vertice), 6, q.sub(p));
                                       
 float[][][] arestas = new float[][][]{{vertices[0],vertices[1]},
                                       {vertices[1],vertices[2]},
@@ -202,12 +215,6 @@ float[][][] faces2 = {{vertices[0], vertices[1], vertices[2], vertices[3], verti
                       {vertices[2], vertices[3], vertices[11], vertices[10]},
                       {vertices[2], vertices[1], vertices[9], vertices[10]},
                       {vertices[0], vertices[8], vertices[9], vertices[1]}};
-
-
-
-
-
-
 
 PShape f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
 PShape[] figura = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10};
@@ -262,8 +269,21 @@ void setup(){
     figura[i].endShape(CLOSE);
     i++;
   }
+  // int i = 0;
+  // for(float[][] vs : faces){
+  //   figura[i] = createShape();
+  //   figura[i].beginShape();
+  //   for(float[] v : vs){
+  //     print(v[0], v[1] , i + "\n");
+  //     figura[i].vertex(v[0], v[1]);
+      
+  //   }
+  //   figura[i].endShape(CLOSE);
+  //   i++;
+  // }
 }
  
 void draw(){
   paintersAlgorithm(distanciasSorted, figura);
+  line(450, 450, 650, 400);
 }
