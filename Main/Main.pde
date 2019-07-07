@@ -1,3 +1,42 @@
+int div;
+float angle;
+float factor;
+float current;
+boolean isRotating = true;
+
+PVector p, q;
+
+float[] observador = {300,200,-150};
+
+float x = 35.26/57.2958;
+float y = 45/57.2958;
+
+float tx = 200;
+float ty = 200;
+float tz = 0;
+
+float[][] vertice = new float[][]{   {100,100,0,1},
+                                      {220,100,0,1},
+                                      {220,220,0,1},
+                                      {180,220,0,1},
+                                      {180,180,0,1},
+                                      {140,180,0,1},
+                                      {140,220,0,1},
+                                      {100,220,0,1},
+                                      {100,100,120,1},
+                                      {220,100,120,1},
+                                      {220,220,120,1},
+                                      {180,220,120,1},
+                                      {180,180,120,1},
+                                      {140,180,120,1},
+                                      {140,220,120,1},
+                                      {100,220,120,1}};
+
+
+float[][] vertices = projecaoIsometrica(vertice);
+
+float[][] distanciasSorted;
+
 float[][] rotate(float[][] vertex, float ang, PVector axis) {
   Rotation r = new Rotation(ang, axis);
   float[][] result = new float[vertex.length][vertex[0].length];
@@ -74,9 +113,9 @@ float[][] centroid(float[][][] faces){
     medY = (maxY + minY) /2;
     medZ = (maxZ + minZ) /2;
 
-    println(" MaxX: "+ maxX + " MaxY: "+maxY + " MaxZ: "+maxZ);
-    println(" MinX: "+ minX + " MinY: "+minY + " MaxZ: "+minZ);
-    println(" MedX: "+ medX + " MedY: "+medY + " MedZ: "+medZ);
+    // println(" MaxX: "+ maxX + " MaxY: "+maxY + " MaxZ: "+maxZ);
+    // println(" MinX: "+ minX + " MinY: "+minY + " MaxZ: "+minZ);
+    // println(" MedX: "+ medX + " MedY: "+medY + " MedZ: "+medZ);
 
     facesCentroid[i][0] = medX;
     facesCentroid[i][1] = medY;
@@ -109,7 +148,6 @@ float[][] insertionSort(float[][] vetor) {
        }
         vetor[i + 1] = key;
     }
-
     return vetor;
 }
 
@@ -138,152 +176,93 @@ void paintersAlgorithm(float[][] dists, PShape[] faces){
   }
 }
 
-float[] observador = {300,200,-150};
+PShape[] buildObject(float[][][] fs) {
+  PShape[] figura = new PShape[10];
 
-float x = 35.26/57.2958;
-float y = 45/57.2958;
-
-float tx = 200;
-float ty = 200;
-float tz = 0;
-
-float[][] vertice = new float[][]{   {100,100,0,1},
-                                      {220,100,0,1},
-                                      {220,220,0,1},
-                                      {180,220,0,1},
-                                      {180,180,0,1},
-                                      {140,180,0,1},
-                                      {140,220,0,1},
-                                      {100,220,0,1},
-                                      {100,100,120,1},
-                                      {220,100,120,1},
-                                      {220,220,120,1},
-                                      {180,220,120,1},
-                                      {180,180,120,1},
-                                      {140,180,120,1},
-                                      {140,220,120,1},
-                                      {100,220,120,1}};
-
-PVector p = new PVector(450, 450);
-PVector q = new PVector(650, 400);
-// float[][] vertices = projecaoIsometrica(vertice);
-float[][] vertices = rotate(projecaoIsometrica(vertice), 6, q.sub(p));
-                                      
-float[][][] arestas = new float[][][]{{vertices[0],vertices[1]},
-                                      {vertices[1],vertices[2]},
-                                      {vertices[2],vertices[3]},
-                                      {vertices[3],vertices[4]},
-                                      {vertices[4], vertices[5]},
-                                      {vertices[5], vertices[6]},
-                                      {vertices[6], vertices[7]},
-                                      {vertices[7], vertices[0]},
-                                      {vertices[8], vertices[9]},
-                                      {vertices[9], vertices[10]},
-                                      {vertices[10], vertices[11]},
-                                      {vertices[11], vertices[12]},
-                                      {vertices[12], vertices[13]},
-                                      {vertices[13], vertices[14]},
-                                      {vertices[14], vertices[15]},
-                                      {vertices[15], vertices[8]},
-                                      {vertices[0], vertices[8]},
-                                      {vertices[7], vertices[15]},
-                                      {vertices[6], vertices[14]},
-                                      {vertices[5], vertices[13]},
-                                      {vertices[4], vertices[12]},
-                                      {vertices[3], vertices[11]},
-                                      {vertices[2], vertices[10]},
-                                      {vertices[1], vertices[9]}};
-
-float[][][][] faces = { {arestas[0], arestas[1], arestas[2], arestas[3], arestas[4], arestas[5], arestas[6], arestas[7]},      //F1
-                        {arestas[8], arestas[9], arestas[10], arestas[11], arestas[12], arestas[13], arestas[14], arestas[15]},//F2
-                        {arestas[7], arestas[16], arestas[15], arestas[17], null, null, null, null},                           //F3 
-                        {arestas[6], arestas[17], arestas[14], arestas[18], null, null, null, null},                           //F4
-                        {arestas[5], arestas[19], arestas[13], arestas[18], null, null, null, null},                           //F5
-                        {arestas[4], arestas[19], arestas[12], arestas[20], null, null, null, null},                           //F6
-                        {arestas[3], arestas[20], arestas[11], arestas[21], null, null, null, null},                           //F7
-                        {arestas[2], arestas[21], arestas[10], arestas[22], null, null, null, null},                           //F8
-                        {arestas[1], arestas[23], arestas[9], arestas[22], null, null, null, null},                            //F9
-                        {arestas[0], arestas[16], arestas[8], arestas[23], null, null, null, null}};                           //F10
-
-float[][][] faces2 = {{vertices[0], vertices[1], vertices[2], vertices[3], vertices[4], vertices[5], vertices[6], vertices[7]},
-                      {vertices[8], vertices[9], vertices[10], vertices[11], vertices[12], vertices[13], vertices[14], vertices[15]},
-                      {vertices[0], vertices[7], vertices[8], vertices[15]},
-                      {vertices[7], vertices[15], vertices[14], vertices[6]},
-                      {vertices[6], vertices[5], vertices[13], vertices[14]},
-                      {vertices[5], vertices[13], vertices[12], vertices[4]},
-                      {vertices[3], vertices[4], vertices[12], vertices[11]},
-                      {vertices[2], vertices[3], vertices[11], vertices[10]},
-                      {vertices[2], vertices[1], vertices[9], vertices[10]},
-                      {vertices[0], vertices[8], vertices[9], vertices[1]}};
-
-PShape f1, f2, f3, f4, f5, f6, f7, f8, f9, f10;
-PShape[] figura = {f1, f2, f3, f4, f5, f6, f7, f8, f9, f10};
-float[][] distanciasSorted;
-
-void setup(){
-  float[][] centroides = centroid(faces2);
-  
-  println("----------CENTROIDES-------------");
-  for(float[] i : centroides){
-    for(float j : i){
-      print(j + " ");
-    }
-    println();
-  }
-    println("----------CENTROIDES-------------\n\n");
-
+  float[][] centroides = centroid(fs);
   float[][] distancias = distanciaFaceObservador(centroides, observador);
-    println("----------DISTANCIAS-------------");
-  for(float[] i : distancias){
-    for(float j : i){
-      print(j + " ");
-    }
-    println();
-  }
-    println("----------DISTANCIAS-------------\n\n");
-
-  distanciasSorted = insertionSort(distancias);
-    println("----------DISTANCIAS-------------");
-  for(float[] i : distanciasSorted){
-    for(float j : i){
-      print(j + " ");
-    }
-    println();
-  }
-    println("----------DISTANCIAS-------------\n\n");
-
-
   
-  size(800,600);
-  background(255,255,255);
+  distanciasSorted = insertionSort(distancias);
 
   int i = 0;
-  for(float[][] vs : faces2){
+  for(float[][] vs : fs){
     figura[i] = createShape();
     figura[i].beginShape();
     for(float[] v : vs){
-      print(v[0], v[1] , i + "\n");
       figura[i].vertex(v[0], v[1]);
-      
     }
     figura[i].endShape(CLOSE);
     i++;
   }
-  // int i = 0;
-  // for(float[][] vs : faces){
-  //   figura[i] = createShape();
-  //   figura[i].beginShape();
-  //   for(float[] v : vs){
-  //     print(v[0], v[1] , i + "\n");
-  //     figura[i].vertex(v[0], v[1]);
-      
-  //   }
-  //   figura[i].endShape(CLOSE);
-  //   i++;
-  // }
+
+  return figura;
 }
- 
-void draw(){
-  paintersAlgorithm(distanciasSorted, figura);
+
+void setup(){
+  size(800,600);
+  background(255,255,255);
+
+  p = new PVector(450, 450);
+  q = new PVector(650, 400);
+  div = 50;
+  angle = 45.;
+  factor = angle / div;
+  current = 0.;
+
+  frameRate(30);
+}
+
+void drawAxis() {
+  stroke(255, 0, 0);
   line(450, 450, 650, 400);
+  stroke(0, 0, 0);
+}
+
+void animateObject() {
+  println("Current: " + current);
+  println("Angle: " + angle);
+  println("Factor: " + factor);
+  
+  PShape[] figura;
+  
+  if (current <= angle) {
+    isRotating = true;
+    current += factor;
+    float[][] vs = rotate(vertices, current, q.sub(p));
+    float[][][] facesObj = {{vs[0], vs[1], vs[2], vs[3], vs[4], vs[5], vs[6], vs[7]}, 
+    {vs[8], vs[9], vs[10], vs[11], vs[12], vs[13], vs[14], vs[15]},
+                      {vs[0], vs[7], vs[8], vs[15]},
+                      {vs[7], vs[15], vs[14], vs[6]},
+                      {vs[6], vs[5], vs[13], vs[14]},
+                      {vs[5], vs[13], vs[12], vs[4]},
+                      {vs[3], vs[4], vs[12], vs[11]},
+                      {vs[2], vs[3], vs[11], vs[10]},
+                      {vs[2], vs[1], vs[9], vs[10]},
+                      {vs[0], vs[8], vs[9], vs[1]}};
+    figura = buildObject(facesObj);
+  }
+  else {
+    isRotating = false;
+    float[][] vs = rotate(vertices, angle, q.sub(p));
+    float[][][] facesObj = {{vs[0], vs[1], vs[2], vs[3], vs[4], vs[5], vs[6], vs[7]},
+                      {vs[8], vs[9], vs[10], vs[11], vs[12], vs[13], vs[14], vs[15]},
+                      {vs[0], vs[7], vs[8], vs[15]},
+                      {vs[7], vs[15], vs[14], vs[6]},
+                      {vs[6], vs[5], vs[13], vs[14]},
+                      {vs[5], vs[13], vs[12], vs[4]},
+                      {vs[3], vs[4], vs[12], vs[11]},
+                      {vs[2], vs[3], vs[11], vs[10]},
+                      {vs[2], vs[1], vs[9], vs[10]},
+                      {vs[0], vs[8], vs[9], vs[1]}};
+    figura = buildObject(facesObj);
+  }
+  
+  paintersAlgorithm(distanciasSorted, figura);
+}
+
+void draw(){
+  background(255,255,255);
+
+  drawAxis();
+  animateObject();
 }
