@@ -108,7 +108,7 @@ float distanciaVetorial(float[] v1, float[] v2){
   return dist;
 }
 
-float[][] distanciaFaceObsrvador(float[][] centr, float[] obser){
+float[][] distanciaFaceObservador(float[][] centr, float[] obser){
   float[][] dists = new float[10][2];
   int i = 0;
   float dist = 0;
@@ -121,13 +121,12 @@ float[][] distanciaFaceObsrvador(float[][] centr, float[] obser){
   return dists;
 }
 
-void painterAlgorithm(float[][] dists, PShape[] faces){
+void paintersAlgorithm(float[][] dists, PShape[] faces){
   for(int i = faces.length -1; i >= 0; i--){
     int faceNum = (int)dists[i][1];
     shape(faces[faceNum],0,0);
   }
 }
-
 
 float[] observador = {300,200,-150};
 
@@ -226,7 +225,7 @@ void setup(){
   }
     println("----------CENTROIDES-------------\n\n");
 
-  float[][] distancias = distanciaFaceObsrvador(centroides, observador);
+  float[][] distancias = distanciaFaceObservador(centroides, observador);
     println("----------DISTANCIAS-------------");
   for(float[] i : distancias){
     for(float j : i){
@@ -266,5 +265,5 @@ void setup(){
 }
  
 void draw(){
-  painterAlgorithm(distanciasSorted, figura);
+  paintersAlgorithm(distanciasSorted, figura);
 }
