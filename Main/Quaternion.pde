@@ -8,13 +8,9 @@ class Quaternion {
     Quaternion(float a, float b, float c, float d) {
         p0 = a; p1 = b; p2 = c; p3 = d;
     }
-
-    Quaternion(float scl, PVector vec) {
-        scalar = scl; vectorial = vec;
-    }
     
     float norm() {
-        return sprt(p0*p0 + p1*p1 + p2*p2 + p3*p3);
+        return sqrt(p0*p0 + p1*p1 + p2*p2 + p3*p3);
     }
 
     Quaternion normalize() {
