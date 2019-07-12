@@ -1,3 +1,5 @@
+import g4p_controls.*;
+
 int div;
 float angle;
 float factor;
@@ -5,6 +7,9 @@ float current;
 boolean isRotating = true;
 
 PVector p, q;
+
+GButton gBtn;
+GTextArea textSample;
 
 float[] observador = {300,200,-150};
 
@@ -199,8 +204,12 @@ PShape[] buildObject(float[][][] fs) {
 }
 
 void setup(){
-  size(800,600);
-  background(255,255,255);
+  size(1200, 700);
+  background(255, 255, 255);
+
+  gBtn = new GButton(this, x, 2, 66, 20, "Rotationar");
+  textSample = new GTextArea(this, 80, 20, 290, 300, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+  textSample.setText("Insira o ponto inicial", 310);
 
   p = new PVector(150, 250);
   q = new PVector(250, 350);
