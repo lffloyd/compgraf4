@@ -202,10 +202,11 @@ void setup(){
   size(800,600);
   background(255,255,255);
 
-  p = new PVector(450, 450);
-  q = new PVector(650, 400);
-  div = 50;
-  angle = 45.;
+  p = new PVector(150, 250);
+  q = new PVector(250, 350);
+  
+  angle = 30.;
+  div = (int)(3*angle);
   factor = angle / div;
   current = 0.;
 
@@ -214,11 +215,11 @@ void setup(){
 
 void drawAxis() {
   stroke(255, 0, 0);
-  line(450, 450, 650, 400);
+  line(p.x, p.y, q.x, q.y);
   stroke(0, 0, 0);
 }
 
-void animateObject() {
+void animateObjectRotation() {
   println("Current: " + current);
   println("Angle: " + angle);
   println("Factor: " + factor);
@@ -264,5 +265,5 @@ void draw(){
   background(255,255,255);
 
   drawAxis();
-  animateObject();
+  animateObjectRotation();
 }
