@@ -4,12 +4,21 @@ int div;
 float angle;
 float factor;
 float current;
-boolean isRotating = true;
+boolean isRotating;
+
+boolean rotationStage;
 
 PVector p, q;
 
-GButton gBtn;
-GTextArea textSample;
+GButton btnRot;
+GTextArea inputRotPt1, inputRotPt2, inputRotAng;
+GLabel labRot1, labRot2, labRot3;
+
+int OFFSET = 10;
+int BTN_WIDTH = 80;
+int BTN_HEIGHT = 30;
+int LBL_WIDTH = 0;
+int LBL_HEIGHT = 0;
 
 float[] observador = {300,200,-150};
 
@@ -207,9 +216,7 @@ void setup(){
   size(1200, 700);
   background(255, 255, 255);
 
-  gBtn = new GButton(this, x, 2, 66, 20, "Rotationar");
-  textSample = new GTextArea(this, 80, 20, 290, 300, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-  textSample.setText("Insira o ponto inicial", 310);
+  drawUI();
 
   p = new PVector(150, 250);
   q = new PVector(250, 350);
@@ -219,7 +226,39 @@ void setup(){
   factor = angle / div;
   current = 0.;
 
+  isRotating = true;
+  rotationStage = true;
+
   frameRate(30);
+}
+
+void drawUI() {
+    String rot1 = "Insira eixo de rotação:";
+    labRot1 = new GLabel(this, 1050, 0, 130, 20, rot1);
+    labRot1.setOpaque(true);
+
+    String rot2 = "Início";
+    labRot1 = new GLabel(this, 1050, 30, 130, 20, rot2);
+    labRot1.setOpaque(true);
+
+    inputRotPt1 = new GTextArea(this, 1050, 50, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputRotPt1.setText("(x,y)", 310);
+
+    String rot3 = "Fim";
+    labRot2 = new GLabel(this, 1050, 110, 130, 20, rot3);
+    labRot2.setOpaque(true);
+
+    inputRotPt2 = new GTextArea(this, 1050, 130, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputRotPt2.setText("(x,y)", 310);
+
+    String rot4 = "Ângulo";
+    labRot3 = new GLabel(this, 1050, 190, 130, 20, rot4);
+    labRot3.setOpaque(true);
+
+    inputRotAng = new GTextArea(this, 1050, 210, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputRotAng.setText("Θ em graus", 310);
+
+    btnRot = new GButton(this, 1050, 270, 130, 30, "Rotacionar");  
 }
 
 void drawAxis() {
