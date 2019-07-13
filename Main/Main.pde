@@ -5,14 +5,17 @@ float angle;
 float factor;
 float current;
 boolean isRotating;
+float t; //variavel de bezier
+boolean isRotating;
+boolean isTranslating;
 
 boolean rotationStage;
 
 PVector p1Rot, p2Rot;
 
-GButton btnRot;
-GTextArea inputRotPt1, inputRotPt2, inputRotAng;
-GLabel labRot1, labRot2, labRot3, labRot4;
+GButton btnRot, btnCur;
+GTextArea inputRotPt1, inputRotPt2, inputRotAng, inputCtrlPt1, inputCtrlPt2, inputCtrlPt3, inputCtrlPt4;
+GLabel labRot1, labRot2, labRot3, labRot4, labCur1, labCur2, labCur3, labCur4;
 
 int OFFSET = 10;
 int BTN_WIDTH = 80;
@@ -251,6 +254,36 @@ void drawUI() {
     inputRotAng.setText("90", 310);
 
     btnRot = new GButton(this, 1050, 270, 130, 30, "Rotacionar");  
+    
+    String cur1 = "1º ponto de controle:";
+    labCur1 = new GLabel(this, 900, 0, 130, 20, cur1);
+    labCur1.setOpaque(true);
+    
+    inputCtrlPt1 = new GTextArea(this, 900, 20, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputCtrlPt1.setText("(1,2,3)", 310);
+
+    String cur2 = "2º ponto de controle:";
+    labCur2 = new GLabel(this, 900, 80, 130, 20, cur2);
+    labCur2.setOpaque(true);
+
+    inputCtrlPt2 = new GTextArea(this, 900, 100, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputCtrlPt2.setText("(4,5,6)", 310);
+
+    String cur3 = "3º ponto de controle:";
+    labCur3 = new GLabel(this, 900, 160, 130, 20, cur3);
+    labCur3.setOpaque(true);
+
+    inputCtrlPt3 = new GTextArea(this, 900, 180, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputCtrlPt3.setText("(7,8,9)", 310);
+
+    String cur4 = "4º ponto de controle:";
+    labCur4 = new GLabel(this, 900, 240, 130, 20, cur4);
+    labCur4.setOpaque(true);
+
+    inputCtrlPt4 = new GTextArea(this, 900, 260, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
+    inputCtrlPt4.setText("(10,11,12)", 310);
+
+    btnCur = new GButton(this, 900, 300, 130, 30, "Transladar");
 }
 
 void drawAxis() {
@@ -311,6 +344,8 @@ public void handleButtonEvents(GButton button, GEvent event) {
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
       print("Ângulo: " + angle);
+    }else if(button == btnCur){
+      cp = pointsToCp(inputCtrlPt1.getText(0), inputCtrlPt2.getText(0), inputCtrlPt3.getText(0), inputCtrlPt4.getText(0));
     }
   }
 }
