@@ -52,7 +52,7 @@ void drawBezier(int[] cp) {
       float posZp = (float) (Math.pow((1-i), 3)*cp[2] + 3*Math.pow((1-i), 2)*i*cp[5] + 3*(1-i)*Math.pow(i, 2)*cp[8] + Math.pow(i, 3)*cp[11]);
       point(posXp + 25, posYp + 25);
   }
-  stroke(0, 0, 0);
+  //stroke(0, 0, 0);
 }
 
 float[][] translateObjectThroughBezier(float[][] vertex, PVector translation) {
@@ -68,7 +68,7 @@ PVector getBezierPoint(float t, int[] cp) {
   int posXp = (int) (Math.pow((1-t), 3)*cp[0] + 3*Math.pow((1-t), 2)*t*cp[3] + 3*(1-t)*Math.pow(t, 2)*cp[6] + Math.pow(t, 3)*cp[9]);
   int posYp = (int) (Math.pow((1-t), 3)*cp[1] + 3*Math.pow((1-t), 2)*t*cp[4] + 3*(1-t)*Math.pow(t, 2)*cp[7] + Math.pow(t, 3)*cp[10]);
   int posZp = (int) (Math.pow((1-t), 3)*cp[2] + 3*Math.pow((1-t), 2)*t*cp[5] + 3*(1-t)*Math.pow(t, 2)*cp[8] + Math.pow(t, 3)*cp[11]);
-  return new PVector(posXp, posYp);
+  return new PVector(posXp, posYp, posZp);
 }
 
 float[] translate(float[] v, PVector dist) {

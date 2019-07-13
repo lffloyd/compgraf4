@@ -307,11 +307,13 @@ void animateObjectTranslation() {
     float[] face1Centroid = currentCentroids[0];
     PVector p = new PVector(face1Centroid[0], face1Centroid[1]);
 
-    vertices = translateObjectThroughBezier(vertice, q.sub(p));
     PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
-    paintersAlgorithm(distanciasSorted, figura);
 
-    t += 0.0015;
+    for(int i=0; i<10;i++){
+      shape(figura[i], q.x-p.x,q.y-p.y);
+  }
+  
+    t += 0.005;
   } else {
     isTranslating = false;
     translationStage = false;
@@ -368,11 +370,14 @@ public void handleButtonEvents(GButton button, GEvent event) {
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
       print("Ângulo: " + angle);
+      isTranslating = false;
     } else if(button == btnCur) {
+      t = 0;
       cp = pointsToCp(inputCtrlPt1.getText(0), inputCtrlPt2.getText(0),
            inputCtrlPt3.getText(0), inputCtrlPt4.getText(0));
       isTranslating = true;
       translationStage = true;
+      isRotating = false;
     }
   }
 }
