@@ -348,7 +348,7 @@ void draw(){
   }
   if (isTranslating && translationStage) {
     drawBezier(cp);
-    drawRegularObject();
+    animateObjectTranslation();
   }
   else {
     drawRegularObject();
