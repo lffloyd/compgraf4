@@ -255,7 +255,6 @@ void drawUI() {
 
 void drawAxis() {
   stroke(255, 0, 0);
-  println(p1Rot.x + "-" + p1Rot.y + "..." + p2Rot.x + "-" + p2Rot.y);
   line(p1Rot.x, p1Rot.y, p2Rot.x, p2Rot.y);
   stroke(0, 0, 0);
 }
