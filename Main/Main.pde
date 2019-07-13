@@ -4,11 +4,10 @@ int div;
 float angle;
 float factor;
 float current;
-boolean isRotating;
+boolean isRotating, isTranslating;
 float t; //variavel de bezier
-boolean isTranslating;
 
-boolean rotationStage;
+boolean rotationStage, translationStage;
 
 PVector p1Rot, p2Rot;
 
@@ -223,6 +222,8 @@ void setup(){
 
   isRotating = false;
   rotationStage = true;
+  isTranslating = false;
+  translationStage = false;
 
   frameRate(30);
 }
@@ -297,6 +298,26 @@ void drawRegularObject() {
   paintersAlgorithm(distanciasSorted, figura);
 }
 
+
+void animateObjectTranslation() {
+  if (t <= 1) {
+    PVector q = getBezierPoint(t, cp);
+
+    float[][] currentCentroids = centroid(assembleFacesFromVertex(vertices));
+    float[] face1Centroid = currentCentroids[0];
+    PVector p = new PVector(face1Centroid[0], face1Centroid[1]);
+
+    vertices = translateObjectThroughBezier(vertice, q.sub(p));
+    PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
+    paintersAlgorithm(distanciasSorted, figura);
+
+    t += 0.0015;
+  } else {
+    isTranslating = false;
+    translationStage = false;
+  }
+}
+
 void animateObjectRotation() {
   // println("Current: " + current);
   // println("Angle: " + angle);
@@ -321,9 +342,13 @@ void animateObjectRotation() {
 void draw(){
   background(255,255,255);
 
-  if (isRotating) {
+  if (isRotating && rotationStage) {
     animateObjectRotation();
     drawAxis();
+  }
+  if (isTranslating && translationStage) {
+    drawBezier(cp);
+    drawRegularObject();
   }
   else {
     drawRegularObject();
@@ -343,8 +368,11 @@ public void handleButtonEvents(GButton button, GEvent event) {
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
       print("Ângulo: " + angle);
-    }else if(button == btnCur){
-      cp = pointsToCp(inputCtrlPt1.getText(0), inputCtrlPt2.getText(0), inputCtrlPt3.getText(0), inputCtrlPt4.getText(0));
+    } else if(button == btnCur) {
+      cp = pointsToCp(inputCtrlPt1.getText(0), inputCtrlPt2.getText(0),
+           inputCtrlPt3.getText(0), inputCtrlPt4.getText(0));
+      isTranslating = true;
+      translationStage = true;
     }
   }
 }
