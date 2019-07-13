@@ -6,7 +6,6 @@ float factor;
 float current;
 boolean isRotating;
 float t; //variavel de bezier
-boolean isRotating;
 boolean isTranslating;
 
 boolean rotationStage;
@@ -22,6 +21,7 @@ int BTN_WIDTH = 80;
 int BTN_HEIGHT = 30;
 int LBL_WIDTH = 0;
 int LBL_HEIGHT = 0;
+int cp[];
 
 float[] observador = {300,200,-150};
 
