@@ -234,27 +234,28 @@ void drawUI() {
     labRot2.setOpaque(true);
 
     inputRotPt1 = new GTextArea(this, 1050, 50, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputRotPt1.setText("(x,y)", 310);
+    inputRotPt1.setText("(200,100)", 310);
 
     String rot3 = "Fim";
     labRot3 = new GLabel(this, 1050, 110, 130, 20, rot3);
     labRot3.setOpaque(true);
 
     inputRotPt2 = new GTextArea(this, 1050, 130, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputRotPt2.setText("(x,y)", 310);
+    inputRotPt2.setText("(300,650)", 310);
 
     String rot4 = "Ângulo";
     labRot4 = new GLabel(this, 1050, 190, 130, 20, rot4);
     labRot4.setOpaque(true);
 
     inputRotAng = new GTextArea(this, 1050, 210, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputRotAng.setText("Θ em graus", 310);
+    inputRotAng.setText("90", 310);
 
     btnRot = new GButton(this, 1050, 270, 130, 30, "Rotacionar");  
 }
 
 void drawAxis() {
   stroke(255, 0, 0);
+  println(p1Rot.x + "-" + p1Rot.y + "..." + p2Rot.x + "-" + p2Rot.y);
   line(p1Rot.x, p1Rot.y, p2Rot.x, p2Rot.y);
   stroke(0, 0, 0);
 }
@@ -271,10 +272,11 @@ void animateObjectRotation() {
   
   PShape[] figura;
   
-  if (current <= angle) {
-    isRotating = true;
+  if (current <= angle/2) {
+    PVector p = new PVector(p1Rot.x, p1Rot.y);
+    PVector q = new PVector(p2Rot.x, p2Rot.y);
     current += factor;
-    vertices = rotate(vertices, current, p2Rot.sub(p1Rot));
+    vertices = rotate(vertices, factor, q.sub(p));
     figura = buildObject(assembleFacesFromVertex(vertices));
     paintersAlgorithm(distanciasSorted, figura);
   }
@@ -288,8 +290,8 @@ void draw(){
   background(255,255,255);
 
   if (isRotating) {
-    drawAxis();
     animateObjectRotation();
+    drawAxis();
   }
   else {
     drawRegularObject();

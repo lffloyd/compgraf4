@@ -4,11 +4,11 @@ class Rotation {
     Quaternion q, qConjugate;
 
     Rotation(float ang, PVector axis) {
-        angle = ang;
+        angle = ang/2;
         axis.normalize();
         rotationAxis = axis;
-        q = new Quaternion(cos(ang/2), rotationAxis.x*sin(ang/2), 
-                        rotationAxis.y*sin(ang/2), rotationAxis.z*sin(ang/2));
+        q = new Quaternion(cos(angle), rotationAxis.x*sin(angle), 
+                        rotationAxis.y*sin(angle), rotationAxis.z*sin(angle));
         qConjugate = q.conjugate();
     }
 
