@@ -8,11 +8,11 @@ boolean isRotating;
 
 boolean rotationStage;
 
-PVector p, q;
+PVector p1Rot, p2Rot;
 
 GButton btnRot;
 GTextArea inputRotPt1, inputRotPt2, inputRotAng;
-GLabel labRot1, labRot2, labRot3;
+GLabel labRot1, labRot2, labRot3, labRot4;
 
 int OFFSET = 10;
 int BTN_WIDTH = 80;
@@ -218,15 +218,7 @@ void setup(){
 
   drawUI();
 
-  p = new PVector(150, 250);
-  q = new PVector(250, 350);
-  
-  angle = 30.;
-  div = (int)(3*angle);
-  factor = angle / div;
-  current = 0.;
-
-  isRotating = true;
+  isRotating = false;
   rotationStage = true;
 
   frameRate(30);
@@ -238,22 +230,22 @@ void drawUI() {
     labRot1.setOpaque(true);
 
     String rot2 = "Início";
-    labRot1 = new GLabel(this, 1050, 30, 130, 20, rot2);
-    labRot1.setOpaque(true);
+    labRot2 = new GLabel(this, 1050, 30, 130, 20, rot2);
+    labRot2.setOpaque(true);
 
     inputRotPt1 = new GTextArea(this, 1050, 50, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
     inputRotPt1.setText("(x,y)", 310);
 
     String rot3 = "Fim";
-    labRot2 = new GLabel(this, 1050, 110, 130, 20, rot3);
-    labRot2.setOpaque(true);
+    labRot3 = new GLabel(this, 1050, 110, 130, 20, rot3);
+    labRot3.setOpaque(true);
 
     inputRotPt2 = new GTextArea(this, 1050, 130, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
     inputRotPt2.setText("(x,y)", 310);
 
     String rot4 = "Ângulo";
-    labRot3 = new GLabel(this, 1050, 190, 130, 20, rot4);
-    labRot3.setOpaque(true);
+    labRot4 = new GLabel(this, 1050, 190, 130, 20, rot4);
+    labRot4.setOpaque(true);
 
     inputRotAng = new GTextArea(this, 1050, 210, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
     inputRotAng.setText("Θ em graus", 310);
@@ -263,55 +255,60 @@ void drawUI() {
 
 void drawAxis() {
   stroke(255, 0, 0);
-  line(p.x, p.y, q.x, q.y);
+  line(p1Rot.x, p1Rot.y, p2Rot.x, p2Rot.y);
   stroke(0, 0, 0);
 }
 
+void drawRegularObject() {
+  PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
+  paintersAlgorithm(distanciasSorted, figura);
+}
+
 void animateObjectRotation() {
-  println("Current: " + current);
-  println("Angle: " + angle);
-  println("Factor: " + factor);
+  // println("Current: " + current);
+  // println("Angle: " + angle);
+  // println("Factor: " + factor);
   
   PShape[] figura;
   
   if (current <= angle) {
     isRotating = true;
     current += factor;
-    float[][] vs = rotate(vertices, current, q.sub(p));
-    float[][][] facesObj = {{vs[0], vs[1], vs[2], vs[3], vs[4], vs[5], vs[6], vs[7]}, 
-    {vs[8], vs[9], vs[10], vs[11], vs[12], vs[13], vs[14], vs[15]},
-                      {vs[0], vs[7], vs[8], vs[15]},
-                      {vs[7], vs[15], vs[14], vs[6]},
-                      {vs[6], vs[5], vs[13], vs[14]},
-                      {vs[5], vs[13], vs[12], vs[4]},
-                      {vs[3], vs[4], vs[12], vs[11]},
-                      {vs[2], vs[3], vs[11], vs[10]},
-                      {vs[2], vs[1], vs[9], vs[10]},
-                      {vs[0], vs[8], vs[9], vs[1]}};
-    figura = buildObject(facesObj);
+    vertices = rotate(vertices, current, p2Rot.sub(p1Rot));
+    figura = buildObject(assembleFacesFromVertex(vertices));
+    paintersAlgorithm(distanciasSorted, figura);
   }
   else {
     isRotating = false;
-    float[][] vs = rotate(vertices, angle, q.sub(p));
-    float[][][] facesObj = {{vs[0], vs[1], vs[2], vs[3], vs[4], vs[5], vs[6], vs[7]},
-                      {vs[8], vs[9], vs[10], vs[11], vs[12], vs[13], vs[14], vs[15]},
-                      {vs[0], vs[7], vs[8], vs[15]},
-                      {vs[7], vs[15], vs[14], vs[6]},
-                      {vs[6], vs[5], vs[13], vs[14]},
-                      {vs[5], vs[13], vs[12], vs[4]},
-                      {vs[3], vs[4], vs[12], vs[11]},
-                      {vs[2], vs[3], vs[11], vs[10]},
-                      {vs[2], vs[1], vs[9], vs[10]},
-                      {vs[0], vs[8], vs[9], vs[1]}};
-    figura = buildObject(facesObj);
+    rotationStage = false;
   }
-  
-  paintersAlgorithm(distanciasSorted, figura);
 }
 
 void draw(){
   background(255,255,255);
 
-  drawAxis();
-  animateObjectRotation();
+  if (isRotating) {
+    drawAxis();
+    animateObjectRotation();
+  }
+  else {
+    drawRegularObject();
+  }
+}
+
+public void handleButtonEvents(GButton button, GEvent event) {
+  if (event == GEvent.CLICKED) {
+    if (button == btnRot) {
+      p1Rot = strToVector(inputRotPt1.getText(0));
+      p2Rot = strToVector(inputRotPt2.getText(0));
+      angle = strToFloat(inputRotAng.getText(0));
+      div = (int)(6*angle);
+      factor = angle / div;
+      current = 0.;
+      isRotating = true;
+      print("P1: " + p1Rot);
+      print("P2: " + p2Rot);
+      print("Ângulo: " + angle);
+    }
+  }
 }
