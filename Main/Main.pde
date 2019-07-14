@@ -261,28 +261,28 @@ void drawUI() {
     labCur1.setOpaque(true);
     
     inputCtrlPt1 = new GTextArea(this, 900, 20, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt1.setText("(1,2,3)", 310);
+    inputCtrlPt1.setText("(50,100,3)", 310);
 
     String cur2 = "2º ponto de controle:";
     labCur2 = new GLabel(this, 900, 80, 130, 20, cur2);
     labCur2.setOpaque(true);
 
     inputCtrlPt2 = new GTextArea(this, 900, 100, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt2.setText("(4,5,6)", 310);
+    inputCtrlPt2.setText("(200,200,6)", 310);
 
     String cur3 = "3º ponto de controle:";
     labCur3 = new GLabel(this, 900, 160, 130, 20, cur3);
     labCur3.setOpaque(true);
 
     inputCtrlPt3 = new GTextArea(this, 900, 180, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt3.setText("(7,8,9)", 310);
+    inputCtrlPt3.setText("(20,270,9)", 310);
 
     String cur4 = "4º ponto de controle:";
     labCur4 = new GLabel(this, 900, 240, 130, 20, cur4);
     labCur4.setOpaque(true);
 
     inputCtrlPt4 = new GTextArea(this, 900, 260, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt4.setText("(10,11,12)", 310);
+    inputCtrlPt4.setText("(0,400,12)", 310);
 
     btnCur = new GButton(this, 900, 300, 130, 30, "Transladar");
 }
