@@ -53,16 +53,6 @@ float[][] vertices = projecaoIsometrica(vertice);
 
 float[][] distanciasSorted;
 
-float[][] rotate(float[][] vertex, float ang, PVector axis) {
-  Rotation r = new Rotation(ang, axis);
-  float[][] result = new float[vertex.length][vertex[0].length];
-  for (int i = 0; i < vertex.length; i++) {
-    float[] w = r.rotate(vertex[i]);
-    result[i] = w;
-  }
-  return result;
-}
-
 float[][] multiplica(float[][] a,float[][] b){
     if (a[0].length != b.length) {
         throw new IllegalArgumentException("Incompatible matrices.");
@@ -210,7 +200,6 @@ PShape[] buildObject(float[][][] fs) {
     figura[i].endShape(CLOSE);
     i++;
   }
-
   return figura;
 }
 
@@ -238,14 +227,14 @@ void drawUI() {
     labRot2.setOpaque(true);
 
     inputRotPt1 = new GTextArea(this, 1050, 50, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputRotPt1.setText("(200,100)", 310);
+    inputRotPt1.setText("(200,100,50)", 310);
 
     String rot3 = "Fim";
     labRot3 = new GLabel(this, 1050, 110, 130, 20, rot3);
     labRot3.setOpaque(true);
 
     inputRotPt2 = new GTextArea(this, 1050, 130, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputRotPt2.setText("(300,650)", 310);
+    inputRotPt2.setText("(300,650,0)", 310);
 
     String rot4 = "Ângulo";
     labRot4 = new GLabel(this, 1050, 190, 130, 20, rot4);
@@ -261,28 +250,28 @@ void drawUI() {
     labCur1.setOpaque(true);
     
     inputCtrlPt1 = new GTextArea(this, 900, 20, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt1.setText("(50,100,3)", 310);
+    inputCtrlPt1.setText("(50,50,0)", 310);
 
     String cur2 = "2º ponto de controle:";
     labCur2 = new GLabel(this, 900, 80, 130, 20, cur2);
     labCur2.setOpaque(true);
 
     inputCtrlPt2 = new GTextArea(this, 900, 100, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt2.setText("(200,200,6)", 310);
+    inputCtrlPt2.setText("(500,200,0)", 310);
 
     String cur3 = "3º ponto de controle:";
     labCur3 = new GLabel(this, 900, 160, 130, 20, cur3);
     labCur3.setOpaque(true);
 
     inputCtrlPt3 = new GTextArea(this, 900, 180, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt3.setText("(20,270,9)", 310);
+    inputCtrlPt3.setText("(50,350,0)", 310);
 
     String cur4 = "4º ponto de controle:";
     labCur4 = new GLabel(this, 900, 240, 130, 20, cur4);
     labCur4.setOpaque(true);
 
     inputCtrlPt4 = new GTextArea(this, 900, 260, 130, 60, G4P.SCROLLBARS_BOTH | G4P.SCROLLBARS_AUTOHIDE);
-    inputCtrlPt4.setText("(0,400,12)", 310);
+    inputCtrlPt4.setText("(500,500,0)", 310);
 
     btnCur = new GButton(this, 900, 300, 130, 30, "Transladar");
 }
@@ -307,11 +296,11 @@ void animateObjectTranslation() {
     float[] face1Centroid = currentCentroids[0];
     PVector p = new PVector(face1Centroid[0], face1Centroid[1]);
 
-    vertices = translateObjectThroughBezier(vertice, q.sub(p));
     PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
-    paintersAlgorithm(distanciasSorted, figura);
 
-    t += 0.0015;
+    for(int i=0; i<10;i++) shape(figura[i], q.x-p.x,q.y-p.y);
+  
+    t += 0.005;
   } else {
     isTranslating = false;
     translationStage = false;
@@ -325,9 +314,9 @@ void animateObjectRotation() {
   
   PShape[] figura;
   
-  if (current <= angle/2) {
-    PVector p = new PVector(p1Rot.x, p1Rot.y);
-    PVector q = new PVector(p2Rot.x, p2Rot.y);
+  if (current <= angle) {
+    PVector p = new PVector(p1Rot.x, p1Rot.y, p1Rot.z);
+    PVector q = new PVector(p2Rot.x, p2Rot.y, p2Rot.z);
     current += factor;
     vertices = rotate(vertices, factor, q.sub(p));
     figura = buildObject(assembleFacesFromVertex(vertices));
@@ -361,18 +350,21 @@ public void handleButtonEvents(GButton button, GEvent event) {
       p1Rot = strToVector(inputRotPt1.getText(0));
       p2Rot = strToVector(inputRotPt2.getText(0));
       angle = strToFloat(inputRotAng.getText(0));
-      div = (int)(6*angle);
+      div = 50;
       factor = angle / div;
       current = 0.;
       isRotating = true;
+      isTranslating = false;
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
       print("Ângulo: " + angle);
     } else if(button == btnCur) {
+      t = 0;
       cp = pointsToCp(inputCtrlPt1.getText(0), inputCtrlPt2.getText(0),
            inputCtrlPt3.getText(0), inputCtrlPt4.getText(0));
       isTranslating = true;
       translationStage = true;
+      isRotating = false;
     }
   }
 }

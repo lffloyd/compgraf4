@@ -4,7 +4,7 @@ Funções auxiliares de variados tipos.
 
 PVector strToVector(String str) {
     String[] pntArr = split(str.replace("(", "").replace(")", ""), ",");
-    return new PVector(Integer.parseInt(pntArr[0]), Integer.parseInt(pntArr[1]));
+    return new PVector(Integer.parseInt(pntArr[0]), Integer.parseInt(pntArr[1]), Integer.parseInt(pntArr[2]));
 }
 
 float strToFloat(String str) {
@@ -68,11 +68,21 @@ PVector getBezierPoint(float t, int[] cp) {
   int posXp = (int) (Math.pow((1-t), 3)*cp[0] + 3*Math.pow((1-t), 2)*t*cp[3] + 3*(1-t)*Math.pow(t, 2)*cp[6] + Math.pow(t, 3)*cp[9]);
   int posYp = (int) (Math.pow((1-t), 3)*cp[1] + 3*Math.pow((1-t), 2)*t*cp[4] + 3*(1-t)*Math.pow(t, 2)*cp[7] + Math.pow(t, 3)*cp[10]);
   int posZp = (int) (Math.pow((1-t), 3)*cp[2] + 3*Math.pow((1-t), 2)*t*cp[5] + 3*(1-t)*Math.pow(t, 2)*cp[8] + Math.pow(t, 3)*cp[11]);
-  return new PVector(posXp, posYp);
+  return new PVector(posXp, posYp, posZp);
 }
 
 float[] translate(float[] v, PVector dist) {
   PVector w = new PVector(v[0], v[1]);
   w.add(dist);
   return new float[]{ w.x, w.y, v[2] };
+}
+
+float[][] rotate(float[][] vertex, float ang, PVector axis) {
+  Rotation r = new Rotation(ang, axis);
+  float[][] result = new float[vertex.length][vertex[0].length];
+  for (int i = 0; i < vertex.length; i++) {
+    float[] w = r.rotate(vertex[i]);
+    result[i] = w;
+  }
+  return result;
 }

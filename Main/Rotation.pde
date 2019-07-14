@@ -4,12 +4,17 @@ class Rotation {
     Quaternion q, qConjugate;
 
     Rotation(float ang, PVector axis) {
-        angle = ang/2;
+        float tempAngle = ang/57.2958;
+        angle = tempAngle/2.0;
         axis.normalize();
         rotationAxis = axis;
         q = new Quaternion(cos(angle), rotationAxis.x*sin(angle), 
                         rotationAxis.y*sin(angle), rotationAxis.z*sin(angle));
         qConjugate = q.conjugate();
+
+        println("orig. angle: " + ang);
+        println("angle: "+angle);
+        println("axis: "+axis);
     }
 
     float[] rotate(float[] point) {
