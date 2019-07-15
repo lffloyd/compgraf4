@@ -311,7 +311,8 @@ void animateObjectTranslation() {
     drawPosX = q.x-p.x;
     drawPosY = q.y-p.y;
 
-    for(int i=0; i<10;i++) shape(figura[i], drawPosX, drawPosY);
+    //for(int i=0; i<10;i++) shape(figura[i], drawPosX, drawPosY, drawPosZ);
+    paintersAlgorithm(distanciasSorted, figura);
   
     t += 0.005;
   } else {
@@ -330,8 +331,10 @@ void animateObjectRotation() {
   if (current <= angle) {
     PVector p = new PVector(p1Rot.x, p1Rot.y, p1Rot.z);
     PVector q = new PVector(p2Rot.x, p2Rot.y, p2Rot.z);
+    
     current += factor;
     vertices = rotate(vertices, factor, q.sub(p));
+    
     figura = buildObject(assembleFacesFromVertex(vertices));
     paintersAlgorithm(distanciasSorted, figura);
   }
@@ -422,6 +425,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
       isTranslating = true;
       translationStage = true;
       isRotating = false;
+      rotationStage = false;
     }
   }
 }
