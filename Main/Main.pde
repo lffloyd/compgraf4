@@ -7,6 +7,8 @@ float current;
 boolean isRotating, isTranslating;
 float t; //variavel de bezier
 
+float drawPosX = 0, drawPosY = 0;
+
 boolean rotationStage, translationStage;
 
 PVector p1Rot, p2Rot;
@@ -178,7 +180,7 @@ float[][] distanciaFaceObservador(float[][] centr, float[] obser){
 void paintersAlgorithm(float[][] dists, PShape[] faces){
   for(int i = faces.length -1; i >= 0; i--){
     int faceNum = (int)dists[i][1];
-    shape(faces[faceNum],0,0);
+    shape(faces[faceNum], drawPosX, drawPosY);
   }
 }
 
@@ -306,7 +308,10 @@ void animateObjectTranslation() {
 
     PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
 
-    for(int i=0; i<10;i++) shape(figura[i], q.x-p.x,q.y-p.y);
+    drawPosX = q.x-p.x;
+    drawPosY = q.y-p.y;
+
+    for(int i=0; i<10;i++) shape(figura[i], drawPosX, drawPosY);
   
     t += 0.005;
   } else {
