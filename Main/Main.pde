@@ -7,8 +7,6 @@ float current;
 boolean isRotating, isTranslating;
 float t; //variavel de bezier
 
-float drawPosX = 0, drawPosY = 0;
-
 boolean rotationStage, translationStage;
 
 PVector p1Rot, p2Rot;
@@ -24,7 +22,7 @@ int LBL_WIDTH = 0;
 int LBL_HEIGHT = 0;
 int cp[];
 
-float[] observador = {300,200,-150};
+float[] observador = {600,350,-3000};
 
 float x = 35.26/57.2958;
 float y = 45/57.2958;
@@ -180,7 +178,7 @@ float[][] distanciaFaceObservador(float[][] centr, float[] obser){
 void paintersAlgorithm(float[][] dists, PShape[] faces){
   for(int i = faces.length -1; i >= 0; i--){
     int faceNum = (int)dists[i][1];
-    shape(faces[faceNum], drawPosX, drawPosY);
+    shape(faces[faceNum],0,0);
   }
 }
 
@@ -308,11 +306,7 @@ void animateObjectTranslation() {
 
     PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
 
-    drawPosX = q.x-p.x;
-    drawPosY = q.y-p.y;
-
-    //for(int i=0; i<10;i++) shape(figura[i], drawPosX, drawPosY, drawPosZ);
-    paintersAlgorithm(distanciasSorted, figura);
+    for(int i=0; i<10;i++) shape(figura[i], q.x-p.x,q.y-p.y);
   
     t += 0.005;
   } else {
@@ -331,10 +325,8 @@ void animateObjectRotation() {
   if (current <= angle) {
     PVector p = new PVector(p1Rot.x, p1Rot.y, p1Rot.z);
     PVector q = new PVector(p2Rot.x, p2Rot.y, p2Rot.z);
-    
     current += factor;
     vertices = rotate(vertices, factor, q.sub(p));
-    
     figura = buildObject(assembleFacesFromVertex(vertices));
     paintersAlgorithm(distanciasSorted, figura);
   }
@@ -352,6 +344,7 @@ float IA = 1;
 float ID = 0.7;
 float RD = 0.7;
 
+float[] pontoDeLuz = {800, 1000, -500};
 
 void luzDirecional(PShape[] figura, float[][] vertices){
 
@@ -363,7 +356,7 @@ void luzDirecional(PShape[] figura, float[][] vertices){
   for(PShape f : figura){
 
     PVector u = new PVector(normais[i][0], normais[i][1], normais[i][2]);
-    PVector v = new PVector(observador[0], observador[1], observador[2]);
+    PVector v = new PVector(pontoDeLuz[0], pontoDeLuz[1], pontoDeLuz[2]);
 
     float anguloRadianos = PVector.angleBetween(u, v);
     float cosTeta = cos(anguloRadianos);
@@ -372,7 +365,7 @@ void luzDirecional(PShape[] figura, float[][] vertices){
     float ilumDifusa = ID * RD * cosTeta;
   
     float coeficienteI = ilumAmbiente + ilumDifusa;
-    println("COR: " + coeficienteI);
+    //println("COR: " + coeficienteI);
     
     f.setFill(color(cor[0] * coeficienteI, cor[1] * coeficienteI, cor[2] * coeficienteI));
 
@@ -414,7 +407,6 @@ public void handleButtonEvents(GButton button, GEvent event) {
       factor = angle / div;
       current = 0.;
       isRotating = true;
-      rotationStage = true;
       isTranslating = false;
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
@@ -426,7 +418,6 @@ public void handleButtonEvents(GButton button, GEvent event) {
       isTranslating = true;
       translationStage = true;
       isRotating = false;
-      rotationStage = false;
     }
   }
 }
