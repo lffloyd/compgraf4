@@ -414,6 +414,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
       factor = angle / div;
       current = 0.;
       isRotating = true;
+      rotationStage = true;
       isTranslating = false;
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
