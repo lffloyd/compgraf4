@@ -6,7 +6,7 @@ float factor;
 float current;
 boolean isRotating, isTranslating;
 float t; //variavel de bezier
-
+float drawPosX = 0, drawPosY = 0;
 boolean rotationStage, translationStage;
 
 PVector p1Rot, p2Rot;
@@ -178,7 +178,7 @@ float[][] distanciaFaceObservador(float[][] centr, float[] obser){
 void paintersAlgorithm(float[][] dists, PShape[] faces){
   for(int i = faces.length -1; i >= 0; i--){
     int faceNum = (int)dists[i][1];
-    shape(faces[faceNum],0,0);
+    shape(faces[faceNum],drawPosX,drawPosY);
   }
 }
 
@@ -306,8 +306,12 @@ void animateObjectTranslation() {
 
     PShape[] figura = buildObject(assembleFacesFromVertex(vertices));
 
-    for(int i=0; i<10;i++) shape(figura[i], q.x-p.x,q.y-p.y);
-  
+    drawPosX = q.x-p.x;
+    drawPosY = q.y-p.y;
+
+    paintersAlgorithm(distanciasSorted, figura);
+
+    
     t += 0.005;
   } else {
     isTranslating = false;
@@ -407,6 +411,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
       factor = angle / div;
       current = 0.;
       isRotating = true;
+      rotationStage= true;
       isTranslating = false;
       print("P1: " + p1Rot);
       print("P2: " + p2Rot);
@@ -418,6 +423,7 @@ public void handleButtonEvents(GButton button, GEvent event) {
       isTranslating = true;
       translationStage = true;
       isRotating = false;
+      rotationStage = false;
     }
   }
 }
