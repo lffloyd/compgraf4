@@ -200,6 +200,14 @@ PShape[] buildObject(float[][][] fs) {
     figura[i].endShape(CLOSE);
     i++;
   }
+  
+  //Luzes
+
+  luzDirecional(figura, vertices);
+
+  //Luzes
+  
+
   return figura;
 }
 
@@ -328,9 +336,52 @@ void animateObjectRotation() {
   }
 }
 
+//LUZES
+
+float[] cor = {50, 250, 150};
+float RA = 0.8;
+float IA = 1;
+float ID = 0.7;
+float RD = 0.7;
+
+
+void luzDirecional(PShape[] figura, float[][] vertices){
+
+  float[][] normais = calculaNormal(assembleFacesFromVertex(vertices));
+
+
+  int i = 0;
+
+  for(PShape f : figura){
+
+    PVector u = new PVector(normais[i][0], normais[i][1], normais[i][2]);
+    PVector v = new PVector(observador[0], observador[1], observador[2]);
+
+    float anguloRadianos = PVector.angleBetween(u, v);
+    float cosTeta = cos(anguloRadianos);
+
+    float ilumAmbiente = RA*IA;
+    float ilumDifusa = ID * RD * cosTeta;
+  
+    float coeficienteI = ilumAmbiente + ilumDifusa;
+    println("COR: " + coeficienteI);
+    
+    f.setFill(color(cor[0] * coeficienteI, cor[1] * coeficienteI, cor[2] * coeficienteI));
+
+    i++;
+  }
+}
+
+//LUZES
+
 void draw(){
   background(255,255,255);
 
+  calculaNormal(assembleFacesFromVertex(vertices));
+
+
+  //luzDirecional(buildObject(assembleFacesFromVertex(vertices)));
+   
   if (isRotating && rotationStage) {
     animateObjectRotation();
     drawAxis();
@@ -342,6 +393,7 @@ void draw(){
   else {
     drawRegularObject();
   }
+
 }
 
 public void handleButtonEvents(GButton button, GEvent event) {
