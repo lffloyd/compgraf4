@@ -34,4 +34,4 @@ Como pode-se ver, mais à esquerda estão os controles de translação e mais à
 
 ## Licença
 
-Licenciado sobre licença MIT. [Leia aqui](https://github.com/lffloyd/compgraf4/blob/master/LICENSE).
+Licenciado sob MIT. [Leia aqui](https://github.com/lffloyd/compgraf4/blob/master/LICENSE).
