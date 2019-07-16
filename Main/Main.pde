@@ -331,7 +331,12 @@ void animateObjectRotation() {
     PVector q = new PVector(p2Rot.x, p2Rot.y, p2Rot.z);
     current += factor;
     vertices = rotate(vertices, factor, q.sub(p));
+    
     figura = buildObject(assembleFacesFromVertex(vertices));
+    
+    drawPosX = p.x+q.x;
+    drawPosY = p.y+q.y;
+
     paintersAlgorithm(distanciasSorted, figura);
   }
   else {
